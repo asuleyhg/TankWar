@@ -10,6 +10,8 @@ public class Tank {
     private Dir dir;
     //方向键是否被按下的变量
     private boolean bU, bD, bL, bR;
+    //是否移动
+    private boolean moving = false;
 
     public Tank(int x, int y, Dir dir){
         this.x = x;
@@ -44,35 +46,40 @@ public class Tank {
 
     private void setMainDir() {
         if(!bR && !bD && !bL && !bU){
-            dir = Dir.STOP;
-        }
-        if(bR && !bD && !bL && !bU){
-            dir = Dir.RIGHT;
-        }
-        if(!bR && bD && !bL && !bU){
-            dir = Dir.DOWN;
-        }
-        if(!bR && !bD && bL && !bU){
-            dir = Dir.LEFT;
-        }
-        if(!bR && !bD && !bL && bU){
-            dir = Dir.UP;
-        }
-        if(!bR && !bD && bL && bU){
-            dir = Dir.UP_LEFT;
-        }
-        if(bR && !bD && !bL && bU){
-            dir = Dir.UP_RIGHT;
-        }
-        if(!bR && bD && bL && !bU){
-            dir = Dir.DOWN_LEFT;
-        }
-        if(bR && bD && !bL && !bU){
-            dir = Dir.DOWN_RIGHT;
+            moving = false;
+        }else {
+            moving = true;
+            if(bR && !bD && !bL && !bU){
+                dir = Dir.RIGHT;
+            }
+            if(!bR && bD && !bL && !bU){
+                dir = Dir.DOWN;
+            }
+            if(!bR && !bD && bL && !bU){
+                dir = Dir.LEFT;
+            }
+            if(!bR && !bD && !bL && bU){
+                dir = Dir.UP;
+            }
+            if(!bR && !bD && bL && bU){
+                dir = Dir.UP_LEFT;
+            }
+            if(bR && !bD && !bL && bU){
+                dir = Dir.UP_RIGHT;
+            }
+            if(!bR && bD && bL && !bU){
+                dir = Dir.DOWN_LEFT;
+            }
+            if(bR && bD && !bL && !bU){
+                dir = Dir.DOWN_RIGHT;
+            }
         }
     }
 
     private void move() {
+        if(!moving){
+            return;
+        }
         switch (dir){
             case UP:
                 y -= SPEED;
@@ -101,8 +108,6 @@ public class Tank {
             case DOWN_RIGHT:
                 x += SPEED;
                 y += SPEED;
-                break;
-            case STOP:
                 break;
         }
     }

@@ -10,7 +10,7 @@ public class TankFream  extends Frame {
         this.setLocation(400,100);
         this.setSize(800,600);
         this.addKeyListener(new MyKeyListener());
-        myTank = new Tank(100,100, Dir.STOP);
+        myTank = new Tank(100,100, Dir.RIGHT);
     }
 
     @Override
