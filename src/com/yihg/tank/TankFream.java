@@ -3,13 +3,15 @@ package com.yihg.tank;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TankFream  extends Frame {
     public static final TankFream INSTANCE = new TankFream();
     public static final int GAME_WIDTH = 800, GAME_HEIGHT = 600;
-    Tank myTank;
-    Tank enemyTank;
-    Bullet bullet;
+    private Tank myTank;
+    private Tank enemyTank;
+    private List<Bullet> bullets;
 
     private TankFream() {
         this.setTitle("tank war");
@@ -18,17 +20,23 @@ public class TankFream  extends Frame {
         this.addKeyListener(new MyKeyListener());
         myTank = new Tank(100,100, Dir.RIGHT, Group.GOOD);
         enemyTank = new Tank(300, 300, Dir.UP, Group.ENEMY);
-        bullet = new Bullet(100, 100, Dir.RIGHT, Group.GOOD);
+        bullets = new ArrayList<>();
     }
 
     @Override
     public void paint(Graphics g) {
         myTank.paint(g);
         enemyTank.paint(g);
-        bullet.paint(g);
+        for(Bullet bullet : bullets){
+            bullet.paint(g);
+        }
     }
 
     Image offScreenImage = null;
+
+    public void add(Bullet bullet){
+        this.bullets.add(bullet);
+    }
 
     @Override
     public void update(Graphics g) {

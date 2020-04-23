@@ -166,7 +166,7 @@ public class Tank {
             case KeyEvent.VK_D :
                 bR = false;
                 break;
-            case KeyEvent.VK_CONTROL :
+            case KeyEvent.VK_J :
                 fire();
                 break;
         }
@@ -174,6 +174,6 @@ public class Tank {
     }
 
     private void fire() {
-        TankFream.INSTANCE.bullet = new Bullet(x, y, dir, group);
+        TankFream.INSTANCE.add(new Bullet(x, y, dir, group));
     }
 }
