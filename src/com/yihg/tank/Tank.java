@@ -1,5 +1,10 @@
+package com.yihg.tank;
+
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 public class Tank {
     // 初始位置
@@ -21,7 +26,20 @@ public class Tank {
 
 
     public void paint(Graphics g) {
-        g.fillRect(x, y, 50, 50);
+        switch (dir){
+            case LEFT:
+                g.drawImage(ResourceMgr.goodTankL, x, y, null);
+                break;
+            case RIGHT:
+                g.drawImage(ResourceMgr.goodTankR, x, y, null);
+                break;
+            case UP:
+                g.drawImage(ResourceMgr.goodTankU, x, y, null);
+                break;
+            case DOWN:
+                g.drawImage(ResourceMgr.goodTankD, x, y, null);
+                break;
+        }
         move();
     }
 
