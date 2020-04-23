@@ -17,29 +17,50 @@ public class Tank {
     private boolean bU, bD, bL, bR;
     //是否移动
     private boolean moving = false;
+    //阵营
+    private Group group;
 
-    public Tank(int x, int y, Dir dir){
+    public Tank(int x, int y, Dir dir, Group group){
         this.x = x;
         this.y = y;
         this.dir = dir;
+        this.group = group;
     }
 
 
     public void paint(Graphics g) {
-        switch (dir){
-            case LEFT:
-                g.drawImage(ResourceMgr.goodTankL, x, y, null);
-                break;
-            case RIGHT:
-                g.drawImage(ResourceMgr.goodTankR, x, y, null);
-                break;
-            case UP:
-                g.drawImage(ResourceMgr.goodTankU, x, y, null);
-                break;
-            case DOWN:
-                g.drawImage(ResourceMgr.goodTankD, x, y, null);
-                break;
+        if(this.group == Group.GOOD){
+            switch (dir){
+                case LEFT:
+                    g.drawImage(ResourceMgr.goodTankL, x, y, null);
+                    break;
+                case RIGHT:
+                    g.drawImage(ResourceMgr.goodTankR, x, y, null);
+                    break;
+                case UP:
+                    g.drawImage(ResourceMgr.goodTankU, x, y, null);
+                    break;
+                case DOWN:
+                    g.drawImage(ResourceMgr.goodTankD, x, y, null);
+                    break;
+            }
+        }else if (this.group == Group.ENEMY){
+            switch (dir){
+                case LEFT:
+                    g.drawImage(ResourceMgr.enemyTankL, x, y, null);
+                    break;
+                case RIGHT:
+                    g.drawImage(ResourceMgr.enemyTankR, x, y, null);
+                    break;
+                case UP:
+                    g.drawImage(ResourceMgr.enemyTankU, x, y, null);
+                    break;
+                case DOWN:
+                    g.drawImage(ResourceMgr.enemyTankD, x, y, null);
+                    break;
+            }
         }
+
         move();
     }
 
@@ -145,7 +166,14 @@ public class Tank {
             case KeyEvent.VK_D :
                 bR = false;
                 break;
+            case KeyEvent.VK_CONTROL :
+                fire();
+                break;
         }
         setMainDir();
+    }
+
+    private void fire() {
+        TankFream.INSTANCE.bullet = new Bullet(x, y, dir, group);
     }
 }

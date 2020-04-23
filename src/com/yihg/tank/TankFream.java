@@ -5,20 +5,27 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 public class TankFream  extends Frame {
+    public static final TankFream INSTANCE = new TankFream();
     public static final int GAME_WIDTH = 800, GAME_HEIGHT = 600;
     Tank myTank;
+    Tank enemyTank;
+    Bullet bullet;
 
-    public TankFream() {
+    private TankFream() {
         this.setTitle("tank war");
         this.setLocation(400,100);
         this.setSize(GAME_WIDTH,GAME_HEIGHT);
         this.addKeyListener(new MyKeyListener());
-        myTank = new Tank(100,100, Dir.RIGHT);
+        myTank = new Tank(100,100, Dir.RIGHT, Group.GOOD);
+        enemyTank = new Tank(300, 300, Dir.UP, Group.ENEMY);
+        bullet = new Bullet(100, 100, Dir.RIGHT, Group.GOOD);
     }
 
     @Override
     public void paint(Graphics g) {
         myTank.paint(g);
+        enemyTank.paint(g);
+        bullet.paint(g);
     }
 
     Image offScreenImage = null;
