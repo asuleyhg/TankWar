@@ -3,12 +3,22 @@ package com.yihg.tank;
 import java.awt.*;
 
 public class Bullet {
-    private int x,y;
+    private int x, y;
     private Dir dir;
     public static int SPEED = 6;
     private Group group;
+    private Boolean isLive = true;
+    public Boolean getLive() {
+        return isLive;
+    }
 
-    public Bullet(int x, int y, Dir dir, Group group){
+    public void setLive(Boolean live) {
+        isLive = live;
+    }
+
+
+
+    public Bullet(int x, int y, Dir dir, Group group) {
         this.x = x;
         this.y = y;
         this.dir = dir;
@@ -16,7 +26,7 @@ public class Bullet {
     }
 
     public void paint(Graphics g) {
-        switch (group){
+        switch (group) {
             case GOOD:
                 g.drawImage(ResourceMgr.tankMissile, x, y, null);
                 break;
@@ -41,6 +51,13 @@ public class Bullet {
             case RIGHT:
                 x += SPEED;
                 break;
+        }
+        boundsCheck();
+    }
+
+    private void boundsCheck() {
+        if (x < 0 || x > TankFream.GAME_WIDTH || y < 30 || y > TankFream.GAME_HEIGHT) {
+            isLive = false;
         }
     }
 

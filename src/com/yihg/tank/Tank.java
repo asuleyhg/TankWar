@@ -7,10 +7,10 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 public class Tank {
-    // 初始位置
-    private int x = 100, y = 100;
     // 速度
     public static final int SPEED = 5;
+    // 初始位置
+    private int x = 100, y = 100;
     //方向
     private Dir dir;
     //方向键是否被按下的变量

@@ -25,8 +25,16 @@ public class TankFream  extends Frame {
 
     @Override
     public void paint(Graphics g) {
+        //显示当前子弹的数量
+        Color c = g.getColor();
+        g.setColor(Color.WHITE);
+        g.drawString("bullet:" + bullets.size(), 10, 50);
+        g.setColor(c);
+
         myTank.paint(g);
         enemyTank.paint(g);
+        //删除出界的子弹
+        bullets.removeIf(Bullet -> !Bullet.getLive());
         for(Bullet bullet : bullets){
             bullet.paint(g);
         }
