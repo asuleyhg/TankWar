@@ -146,6 +146,8 @@ public class Tank {
     }
 
     private void fire() {
-        TankFream.INSTANCE.add(new Bullet(x, y, dir, group));
+        TankFream.INSTANCE.add(new Bullet(x + ResourceMgr.goodTankD.getWidth() / 2 - ResourceMgr.tankMissile.getWidth() / 2
+                , y + ResourceMgr.goodTankD.getHeight() / 2 - ResourceMgr.tankMissile.getHeight() / 2
+                , dir, group));
     }
 }
