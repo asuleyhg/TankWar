@@ -20,6 +20,10 @@ public class Tank {
     private Group group;
     //是否存活
     private Boolean isLive = true;
+    //记录出界前的位置
+    private int oldX, oldY;
+    //坦克宽高
+    private int width, height;
 
     private Random random = new Random();
 
@@ -28,6 +32,8 @@ public class Tank {
         this.y = y;
         this.dir = dir;
         this.group = group;
+        this.width = ResourceMgr.enemyTankD.getWidth();
+        this.height = ResourceMgr.enemyTankD.getHeight();
     }
 
     public int getX() {
@@ -83,6 +89,9 @@ public class Tank {
         if (!moving) {
             return;
         }
+        //记录出界前的位置
+        this.oldX = x;
+        this.oldY = y;
         switch (dir) {
             case UP:
                 y -= SPEED;
@@ -97,6 +106,7 @@ public class Tank {
                 x += SPEED;
                 break;
         }
+        boundsCheck();
         //每次move完了之后改变方向
         randomDir();
         //随机开火
@@ -116,6 +126,18 @@ public class Tank {
         TankFream.INSTANCE.add(new Bullet(x + ResourceMgr.goodTankD.getWidth() / 2 - ResourceMgr.tankMissile.getWidth() / 2
                 , y + ResourceMgr.goodTankD.getHeight() / 2 - ResourceMgr.tankMissile.getHeight() / 2
                 , dir, group));
+    }
+
+    //出界检查
+    private void boundsCheck() {
+        if (x < 0 || x > TankFream.GAME_WIDTH - width || y < 30 || y + height > TankFream.GAME_HEIGHT) {
+            this.back();
+        }
+    }
+
+    private void back() {
+        this.x = oldX;
+        this.y = oldY;
     }
 
     public void die() {
