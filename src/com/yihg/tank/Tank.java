@@ -142,5 +142,6 @@ public class Tank {
 
     public void die() {
         this.isLive = false;
+        TankFream.INSTANCE.add(new Explode(x, y));
     }
 }

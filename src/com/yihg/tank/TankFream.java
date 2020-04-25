@@ -10,8 +10,9 @@ public class TankFream  extends Frame {
     public static final TankFream INSTANCE = new TankFream();
     public static final int GAME_WIDTH = 800, GAME_HEIGHT = 600;
     private Player myTank;
-    private List<Tank> enemyTankList = new ArrayList<>();
+    private List<Tank> enemyTankList;
     private List<Bullet> bullets;
+    private List<Explode> explodes;
 
     private TankFream() {
         this.setTitle("tank war");
@@ -20,6 +21,8 @@ public class TankFream  extends Frame {
         this.addKeyListener(new MyKeyListener());
         myTank = new Player(100,100, Dir.RIGHT, Group.GOOD);
         bullets = new ArrayList<>();
+        enemyTankList = new ArrayList<>();
+        explodes = new ArrayList<>();
     }
 
     private void addEnemy(List<Tank> enemyTankList) {
@@ -43,6 +46,11 @@ public class TankFream  extends Frame {
         enemyTankList.removeIf(Tank -> !Tank.getLive());
         for (Tank enemyTank : enemyTankList){
             enemyTank.paint(g);
+        }
+
+        explodes.removeIf(Explode -> !Explode.getLive());
+        for(Explode explode : explodes){
+            explode.paint(g);
         }
         //如果场面上剩余的敌人数不超过3，则生成新的敌人
         if(enemyTankList.size() < 3){
@@ -80,6 +88,10 @@ public class TankFream  extends Frame {
         gOffScreen.setColor(c);
         paint(gOffScreen);
         g.drawImage(offScreenImage, 0, 0, null);
+    }
+
+    public void add(Explode explode) {
+        this.explodes.add(explode);
     }
 
     private class MyKeyListener extends KeyAdapter {

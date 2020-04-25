@@ -8,6 +8,7 @@ public class ResourceMgr {
     public static BufferedImage goodTankL, goodTankR, goodTankU, goodTankD;
     public static BufferedImage enemyTankL, enemyTankR, enemyTankU, enemyTankD;
     public static BufferedImage tankMissile,enemyMissile;
+    public static BufferedImage[] explodes = new BufferedImage[8];
 
 
     static {
@@ -22,6 +23,9 @@ public class ResourceMgr {
             enemyTankD = ImageIO.read(Tank.class.getClassLoader().getResourceAsStream("images/enemy1D.gif"));
             tankMissile = ImageIO.read(Tank.class.getClassLoader().getResourceAsStream("images/tankmissile.gif"));
             enemyMissile = ImageIO.read(Tank.class.getClassLoader().getResourceAsStream("images/enemymissile.gif"));
+            for(int i = 0; i < 8; i++){
+                explodes[i] = ImageIO.read(Tank.class.getClassLoader().getResourceAsStream("images/blast" + (i+1) + ".gif"));
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
