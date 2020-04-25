@@ -33,6 +33,10 @@ public class ImageTest {
         list.add("c");
         list.add("d");
         list.add("d");
+        list.add(null);
+        list.add(null);
+
+        list.removeIf(ArrayList -> ArrayList == null);
 //        removeSome(list);
 //        removeSome2(list);
         removeSome3(list);

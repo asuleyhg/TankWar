@@ -10,7 +10,7 @@ public class TankFream  extends Frame {
     public static final TankFream INSTANCE = new TankFream();
     public static final int GAME_WIDTH = 800, GAME_HEIGHT = 600;
     private Tank myTank;
-    private Tank enemyTank;
+    private List<Tank> enemyTankList = new ArrayList<>();
     private List<Bullet> bullets;
 
     private TankFream() {
@@ -19,8 +19,14 @@ public class TankFream  extends Frame {
         this.setSize(GAME_WIDTH,GAME_HEIGHT);
         this.addKeyListener(new MyKeyListener());
         myTank = new Tank(100,100, Dir.RIGHT, Group.GOOD);
-        enemyTank = new Tank(300, 300, Dir.UP, Group.ENEMY);
         bullets = new ArrayList<>();
+    }
+
+    private void addEnemy(List<Tank> enemyTankList) {
+        enemyTankList.add(
+                new Tank((int) (Math.random() * (GAME_WIDTH - ResourceMgr.enemyTankD.getWidth()))
+                        , (int) (Math.random() * (GAME_HEIGHT - 30 - ResourceMgr.enemyTankD.getHeight())) + 30
+                        , Dir.UP, Group.ENEMY));
     }
 
     @Override
@@ -31,11 +37,27 @@ public class TankFream  extends Frame {
         g.drawString("bullet:" + bullets.size(), 10, 50);
         g.setColor(c);
 
-        myTank.paint(g);
-        enemyTank.paint(g);
+        if(myTank.getLive()){
+            myTank.paint(g);
+        }
+        enemyTankList.removeIf(Tank -> !Tank.getLive());
+        for (Tank enemyTank : enemyTankList){
+            enemyTank.paint(g);
+        }
+        //如果场面上剩余的敌人数不超过3，则生成新的敌人
+        if(enemyTankList.size() < 3){
+            addEnemy(enemyTankList);
+        }
         //删除出界的子弹
         bullets.removeIf(Bullet -> !Bullet.getLive());
         for(Bullet bullet : bullets){
+            //与每一辆敌人坦克作比较
+            for (Tank enemyTank : enemyTankList){
+                //如果碰撞产生，则跳出循环
+                if(bullet.collidesWithTank(enemyTank)){
+                    break;
+                }
+            }
             bullet.paint(g);
         }
     }

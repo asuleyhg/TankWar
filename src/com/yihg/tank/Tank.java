@@ -19,6 +19,8 @@ public class Tank {
     private boolean moving = false;
     //阵营
     private Group group;
+    //是否存活
+    private Boolean isLive = true;
 
     public Tank(int x, int y, Dir dir, Group group){
         this.x = x;
@@ -27,6 +29,29 @@ public class Tank {
         this.group = group;
     }
 
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public Boolean getLive() {
+        return isLive;
+    }
+
+    public void setLive(Boolean live) {
+        isLive = live;
+    }
 
     public void paint(Graphics g) {
         if(this.group == Group.GOOD){
@@ -149,5 +174,9 @@ public class Tank {
         TankFream.INSTANCE.add(new Bullet(x + ResourceMgr.goodTankD.getWidth() / 2 - ResourceMgr.tankMissile.getWidth() / 2
                 , y + ResourceMgr.goodTankD.getHeight() / 2 - ResourceMgr.tankMissile.getHeight() / 2
                 , dir, group));
+    }
+
+    public void die() {
+        this.isLive = false;
     }
 }

@@ -38,6 +38,22 @@ public class Bullet {
         move();
     }
 
+    public Boolean collidesWithTank(Tank tank){
+        Rectangle rect = new Rectangle(x, y, ResourceMgr.tankMissile.getWidth(), ResourceMgr.tankMissile.getHeight());
+        Rectangle rectTank = new Rectangle(tank.getX(), tank.getY(),
+                ResourceMgr.goodTankD.getWidth(), ResourceMgr.goodTankD.getHeight());
+        if(rect.intersects(rectTank)){
+            this.die();
+            tank.die();
+            return true;
+        }
+        return  false;
+    }
+
+    private void die() {
+        this.isLive = false;
+    }
+
     private void move() {
         switch (dir) {
             case UP:
