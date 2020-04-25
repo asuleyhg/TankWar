@@ -9,7 +9,7 @@ import java.util.List;
 public class TankFream  extends Frame {
     public static final TankFream INSTANCE = new TankFream();
     public static final int GAME_WIDTH = 800, GAME_HEIGHT = 600;
-    private Tank myTank;
+    private Player myTank;
     private List<Tank> enemyTankList = new ArrayList<>();
     private List<Bullet> bullets;
 
@@ -18,7 +18,7 @@ public class TankFream  extends Frame {
         this.setLocation(400,100);
         this.setSize(GAME_WIDTH,GAME_HEIGHT);
         this.addKeyListener(new MyKeyListener());
-        myTank = new Tank(100,100, Dir.RIGHT, Group.GOOD);
+        myTank = new Player(100,100, Dir.RIGHT, Group.GOOD);
         bullets = new ArrayList<>();
     }
 

@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Random;
 
 public class Tank {
     // 速度
@@ -13,16 +14,16 @@ public class Tank {
     private int x = 100, y = 100;
     //方向
     private Dir dir;
-    //方向键是否被按下的变量
-    private boolean bU, bD, bL, bR;
     //是否移动
-    private boolean moving = false;
+    private boolean moving = true;
     //阵营
     private Group group;
     //是否存活
     private Boolean isLive = true;
 
-    public Tank(int x, int y, Dir dir, Group group){
+    private Random random = new Random();
+
+    public Tank(int x, int y, Dir dir, Group group) {
         this.x = x;
         this.y = y;
         this.dir = dir;
@@ -53,86 +54,36 @@ public class Tank {
         isLive = live;
     }
 
-    public void paint(Graphics g) {
-        if(this.group == Group.GOOD){
-            switch (dir){
-                case LEFT:
-                    g.drawImage(ResourceMgr.goodTankL, x, y, null);
-                    break;
-                case RIGHT:
-                    g.drawImage(ResourceMgr.goodTankR, x, y, null);
-                    break;
-                case UP:
-                    g.drawImage(ResourceMgr.goodTankU, x, y, null);
-                    break;
-                case DOWN:
-                    g.drawImage(ResourceMgr.goodTankD, x, y, null);
-                    break;
-            }
-        }else if (this.group == Group.ENEMY){
-            switch (dir){
-                case LEFT:
-                    g.drawImage(ResourceMgr.enemyTankL, x, y, null);
-                    break;
-                case RIGHT:
-                    g.drawImage(ResourceMgr.enemyTankR, x, y, null);
-                    break;
-                case UP:
-                    g.drawImage(ResourceMgr.enemyTankU, x, y, null);
-                    break;
-                case DOWN:
-                    g.drawImage(ResourceMgr.enemyTankD, x, y, null);
-                    break;
-            }
-        }
+    public Group getGroup() {
+        return group;
+    }
 
+    public void setGroup(Group group) {
+        this.group = group;
+    }
+
+    public void paint(Graphics g) {
+        switch (dir) {
+            case LEFT:
+                g.drawImage(ResourceMgr.enemyTankL, x, y, null);
+                break;
+            case RIGHT:
+                g.drawImage(ResourceMgr.enemyTankR, x, y, null);
+                break;
+            case UP:
+                g.drawImage(ResourceMgr.enemyTankU, x, y, null);
+                break;
+            case DOWN:
+                g.drawImage(ResourceMgr.enemyTankD, x, y, null);
+                break;
+        }
         move();
     }
-
-    public void keyPressed(KeyEvent e) {
-        int key = e.getKeyCode();
-        switch (key){
-            case KeyEvent.VK_W :
-                bU = true;
-                break;
-            case KeyEvent.VK_A :
-                bL = true;
-                break;
-            case KeyEvent.VK_S :
-                bD = true;
-                break;
-            case KeyEvent.VK_D :
-                bR = true;
-                break;
-        }
-        setMainDir();
-    }
-
-    private void setMainDir() {
-        if(!bR && !bD && !bL && !bU){
-            moving = false;
-        }else {
-            moving = true;
-            if(bR && !bD && !bL && !bU){
-                dir = Dir.RIGHT;
-            }
-            if(!bR && bD && !bL && !bU){
-                dir = Dir.DOWN;
-            }
-            if(!bR && !bD && bL && !bU){
-                dir = Dir.LEFT;
-            }
-            if(!bR && !bD && !bL && bU){
-                dir = Dir.UP;
-            }
-        }
-    }
-
     private void move() {
-        if(!moving){
+        if (!moving) {
             return;
         }
-        switch (dir){
+        switch (dir) {
             case UP:
                 y -= SPEED;
                 break;
@@ -146,29 +97,20 @@ public class Tank {
                 x += SPEED;
                 break;
         }
+        //每次move完了之后改变方向
+        randomDir();
+        //随机开火
+        if(random.nextInt(100) > 90){
+            fire();
+        }
     }
 
-    public void keyReleased(KeyEvent e) {
-        int key = e.getKeyCode();
-        switch (key){
-            case KeyEvent.VK_W :
-                bU = false;
-                break;
-            case KeyEvent.VK_A :
-                bL = false;
-                break;
-            case KeyEvent.VK_S :
-                bD = false;
-                break;
-            case KeyEvent.VK_D :
-                bR = false;
-                break;
-            case KeyEvent.VK_J :
-                fire();
-                break;
+    private void randomDir() {
+        if(random.nextInt(100) > 90){
+            this.dir = Dir.getRandomDir();
         }
-        setMainDir();
     }
+
 
     private void fire() {
         TankFream.INSTANCE.add(new Bullet(x + ResourceMgr.goodTankD.getWidth() / 2 - ResourceMgr.tankMissile.getWidth() / 2

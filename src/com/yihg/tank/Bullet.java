@@ -39,6 +39,10 @@ public class Bullet {
     }
 
     public Boolean collidesWithTank(Tank tank){
+        //如果阵营相同，则不作碰撞判断
+        if(this.group == tank.getGroup()) {
+            return false;
+        }
         Rectangle rect = new Rectangle(x, y, ResourceMgr.tankMissile.getWidth(), ResourceMgr.tankMissile.getHeight());
         Rectangle rectTank = new Rectangle(tank.getX(), tank.getY(),
                 ResourceMgr.goodTankD.getWidth(), ResourceMgr.goodTankD.getHeight());
