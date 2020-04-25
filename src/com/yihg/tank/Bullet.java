@@ -7,6 +7,7 @@ public class Bullet {
     private Dir dir;
     public static int SPEED = 6;
     private Group group;
+    //子弹是否存活，false时表示需要删除这颗子弹
     private Boolean isLive = true;
     public Boolean getLive() {
         return isLive;
@@ -55,6 +56,7 @@ public class Bullet {
         boundsCheck();
     }
 
+    //出界检查
     private void boundsCheck() {
         if (x < 0 || x > TankFream.GAME_WIDTH || y < 30 || y > TankFream.GAME_HEIGHT) {
             isLive = false;

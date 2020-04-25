@@ -100,18 +100,6 @@ public class Tank {
             if(!bR && !bD && !bL && bU){
                 dir = Dir.UP;
             }
-            if(!bR && !bD && bL && bU){
-                dir = Dir.UP_LEFT;
-            }
-            if(bR && !bD && !bL && bU){
-                dir = Dir.UP_RIGHT;
-            }
-            if(!bR && bD && bL && !bU){
-                dir = Dir.DOWN_LEFT;
-            }
-            if(bR && bD && !bL && !bU){
-                dir = Dir.DOWN_RIGHT;
-            }
         }
     }
 
@@ -131,22 +119,6 @@ public class Tank {
                 break;
             case RIGHT:
                 x += SPEED;
-                break;
-            case UP_LEFT:
-                x -= SPEED;
-                y -= SPEED;
-                break;
-            case UP_RIGHT:
-                x += SPEED;
-                y -= SPEED;
-                break;
-            case DOWN_LEFT:
-                x -= SPEED;
-                y += SPEED;
-                break;
-            case DOWN_RIGHT:
-                x += SPEED;
-                y += SPEED;
                 break;
         }
     }
