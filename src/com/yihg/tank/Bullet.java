@@ -4,6 +4,8 @@ import java.awt.*;
 
 public class Bullet extends AbstractGameObject{
     private int x, y;
+    private int width, height;
+    private Rectangle rect;
     private Dir dir;
     public static int SPEED = 6;
     private Group group;
@@ -24,6 +26,9 @@ public class Bullet extends AbstractGameObject{
         this.y = y;
         this.dir = dir;
         this.group = group;
+        this.width = ResourceMgr.tankMissile.getWidth();
+        this.height = ResourceMgr.tankMissile.getHeight();
+        this.rect = new Rectangle(x, y, width, height);
     }
 
     public void paint(Graphics g) {
@@ -36,6 +41,9 @@ public class Bullet extends AbstractGameObject{
                 break;
         }
         move();
+        //移动之后更新子弹方块的坐标
+        rect.x = x;
+        rect.y = y;
     }
 
     @Override
@@ -60,7 +68,7 @@ public class Bullet extends AbstractGameObject{
         return  false;
     }
 
-    private void die() {
+    public void die() {
         this.isLive = false;
     }
 
@@ -87,6 +95,10 @@ public class Bullet extends AbstractGameObject{
         if (x < 0 || x > TankFream.GAME_WIDTH || y < 30 || y > TankFream.GAME_HEIGHT) {
             isLive = false;
         }
+    }
+
+    public Rectangle getRect(){
+        return rect;
     }
 
 

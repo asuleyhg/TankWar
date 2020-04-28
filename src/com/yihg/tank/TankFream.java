@@ -1,5 +1,9 @@
 package com.yihg.tank;
 
+import com.yihg.tank.chainofresponsebility.BulletTankCollider;
+import com.yihg.tank.chainofresponsebility.BulletWallCollider;
+import com.yihg.tank.chainofresponsebility.Collider;
+
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -10,10 +14,8 @@ public class TankFream  extends Frame {
     public static final TankFream INSTANCE = new TankFream();
     public static final int GAME_WIDTH = 800, GAME_HEIGHT = 600;
     private Player myTank;
-//    private List<Tank> enemyTankList;
-//    private List<Bullet> bullets;
-//    private List<Explode> explodes;
     private List<AbstractGameObject> objects;
+    private List<Collider> colliders;
 
     private TankFream() {
         this.setTitle("tank war");
@@ -21,14 +23,33 @@ public class TankFream  extends Frame {
         this.setSize(GAME_WIDTH,GAME_HEIGHT);
         this.addKeyListener(new MyKeyListener());
         myTank = new Player(100,100, Dir.RIGHT, Group.GOOD);
+
 //        bullets = new ArrayList<>();
 //        enemyTankList = new ArrayList<>();
 //        explodes = new ArrayList<>();
+        Wall w = new Wall(300, 200, 400, 50);
         objects = new ArrayList<>();
         for (int i=0; i<5; i++){
             addEnemy(objects);
         }
+        objects.add(w);
+        initCollider();
     }
+
+    private void initCollider() {
+        colliders = new ArrayList<>();
+        String[] names = PropertyMgr.get("colliders").split(",");
+        try {
+            for (String name : names){
+                Class clazz = Class.forName("com.yihg.tank.chainofresponsebility." + name);
+                Collider c = (Collider)clazz.getConstructor().newInstance();
+                colliders.add(c);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private void addEnemy(List<AbstractGameObject> enemyTankList) {
         enemyTankList.add(
@@ -42,7 +63,7 @@ public class TankFream  extends Frame {
         //显示当前子弹的数量
         Color c = g.getColor();
         g.setColor(Color.WHITE);
-//        g.drawString("bullet:" + bullets.size(), 10, 50);
+        g.drawString("objects:" + objects.size(), 10, 50);
         g.setColor(c);
 
         if(myTank.getLive()){
@@ -53,15 +74,24 @@ public class TankFream  extends Frame {
 //            object.paint(g);
 //        }
         for(int i = 0; i < objects.size(); i++){
-            AbstractGameObject object = objects.get(i);
-            object.paint(g);
+            AbstractGameObject go1 = objects.get(i);
+            //碰撞检测
+            for (int j = 0; j < objects.size(); j++) {
+                AbstractGameObject go2 = objects.get(j);
+                for(Collider collider : colliders){
+                    collider.collide(go1, go2);
+                }
+            }
+            if(go1.isLive()){
+                go1.paint(g);
+            }
         }
 
 //        explodes.removeIf(Explode -> !Explode.getLive());
 //        for(Explode explode : explodes){
 //            explode.paint(g);
 //        }
-        //TODO 如果场面上剩余的敌人数不超过3，则生成新的敌人
+        // 如果场面上剩余的敌人数不超过3，则生成新的敌人
 //        if(enemyTankList.size() < 3){
 //            addEnemy(enemyTankList);
 //        }
