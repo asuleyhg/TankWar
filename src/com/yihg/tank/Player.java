@@ -3,7 +3,7 @@ package com.yihg.tank;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
-public class Player {
+public class Player extends AbstractGameObject{
     // 速度
     public static final int SPEED = 5;
     // 初始位置
@@ -67,6 +67,11 @@ public class Player {
             }
 
         move();
+    }
+
+    @Override
+    public Boolean isLive() {
+        return this.getLive();
     }
 
     public void keyPressed(KeyEvent e) {
@@ -159,4 +164,5 @@ public class Player {
     public void die() {
         this.isLive = false;
     }
+
 }

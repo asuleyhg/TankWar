@@ -2,7 +2,7 @@ package com.yihg.tank;
 
 import java.awt.*;
 
-public class Explode {
+public class Explode extends AbstractGameObject{
     private int x, y;
     //子弹是否存活，false时表示需要删除这颗子弹
     private Boolean isLive = true;
@@ -29,6 +29,12 @@ public class Explode {
             this.die();
         }
     }
+
+    @Override
+    public Boolean isLive() {
+        return this.getLive();
+    }
+
     private void die() {
         this.isLive = false;
     }

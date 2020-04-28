@@ -1,13 +1,9 @@
 package com.yihg.tank;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.Random;
 
-public class Tank {
+public class Tank extends AbstractGameObject{
     // 速度
     public static final int SPEED = 5;
     // 初始位置
@@ -85,6 +81,12 @@ public class Tank {
         }
         move();
     }
+
+    @Override
+    public Boolean isLive() {
+        return getLive();
+    }
+
     private void move() {
         if (!moving) {
             return;

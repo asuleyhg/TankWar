@@ -2,7 +2,7 @@ package com.yihg.tank;
 
 import java.awt.*;
 
-public class Bullet {
+public class Bullet extends AbstractGameObject{
     private int x, y;
     private Dir dir;
     public static int SPEED = 6;
@@ -38,6 +38,12 @@ public class Bullet {
         move();
     }
 
+    @Override
+    public Boolean isLive() {
+        return this.getLive();
+    }
+
+    //碰撞检测
     public Boolean collidesWithTank(Tank tank){
         //如果阵营相同，则不作碰撞判断
         if(this.group == tank.getGroup()) {

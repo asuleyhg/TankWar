@@ -10,9 +10,10 @@ public class TankFream  extends Frame {
     public static final TankFream INSTANCE = new TankFream();
     public static final int GAME_WIDTH = 800, GAME_HEIGHT = 600;
     private Player myTank;
-    private List<Tank> enemyTankList;
-    private List<Bullet> bullets;
-    private List<Explode> explodes;
+//    private List<Tank> enemyTankList;
+//    private List<Bullet> bullets;
+//    private List<Explode> explodes;
+    private List<AbstractGameObject> objects;
 
     private TankFream() {
         this.setTitle("tank war");
@@ -20,12 +21,16 @@ public class TankFream  extends Frame {
         this.setSize(GAME_WIDTH,GAME_HEIGHT);
         this.addKeyListener(new MyKeyListener());
         myTank = new Player(100,100, Dir.RIGHT, Group.GOOD);
-        bullets = new ArrayList<>();
-        enemyTankList = new ArrayList<>();
-        explodes = new ArrayList<>();
+//        bullets = new ArrayList<>();
+//        enemyTankList = new ArrayList<>();
+//        explodes = new ArrayList<>();
+        objects = new ArrayList<>();
+        for (int i=0; i<5; i++){
+            addEnemy(objects);
+        }
     }
 
-    private void addEnemy(List<Tank> enemyTankList) {
+    private void addEnemy(List<AbstractGameObject> enemyTankList) {
         enemyTankList.add(
                 new Tank((int) (Math.random() * (GAME_WIDTH - ResourceMgr.enemyTankD.getWidth()))
                         , (int) (Math.random() * (GAME_HEIGHT - 30 - ResourceMgr.enemyTankD.getHeight())) + 30
@@ -37,44 +42,49 @@ public class TankFream  extends Frame {
         //显示当前子弹的数量
         Color c = g.getColor();
         g.setColor(Color.WHITE);
-        g.drawString("bullet:" + bullets.size(), 10, 50);
+//        g.drawString("bullet:" + bullets.size(), 10, 50);
         g.setColor(c);
 
         if(myTank.getLive()){
             myTank.paint(g);
         }
-        enemyTankList.removeIf(Tank -> !Tank.getLive());
-        for (Tank enemyTank : enemyTankList){
-            enemyTank.paint(g);
+        objects.removeIf(abstractGameObject -> !abstractGameObject.isLive());
+//        for (AbstractGameObject object : objects){
+//            object.paint(g);
+//        }
+        for(int i = 0; i < objects.size(); i++){
+            AbstractGameObject object = objects.get(i);
+            object.paint(g);
         }
 
-        explodes.removeIf(Explode -> !Explode.getLive());
-        for(Explode explode : explodes){
-            explode.paint(g);
-        }
-        //如果场面上剩余的敌人数不超过3，则生成新的敌人
-        if(enemyTankList.size() < 3){
-            addEnemy(enemyTankList);
-        }
+//        explodes.removeIf(Explode -> !Explode.getLive());
+//        for(Explode explode : explodes){
+//            explode.paint(g);
+//        }
+        //TODO 如果场面上剩余的敌人数不超过3，则生成新的敌人
+//        if(enemyTankList.size() < 3){
+//            addEnemy(enemyTankList);
+//        }
         //删除出界的子弹
-        bullets.removeIf(Bullet -> !Bullet.getLive());
-        for(Bullet bullet : bullets){
-            //与每一辆敌人坦克作比较
-            for (Tank enemyTank : enemyTankList){
-                //如果碰撞产生，则跳出循环
-                if(bullet.collidesWithTank(enemyTank)){
-                    break;
-                }
-            }
-            bullet.paint(g);
-        }
+//        bullets.removeIf(Bullet -> !Bullet.getLive());
+        //TODO 碰撞检测
+//        for(Bullet bullet : bullets){
+//            //与每一辆敌人坦克作比较
+//            for (Tank enemyTank : enemyTankList){
+//                //如果碰撞产生，则跳出循环
+//                if(bullet.collidesWithTank(enemyTank)){
+//                    break;
+//                }
+//            }
+//            bullet.paint(g);
+//        }
     }
 
     Image offScreenImage = null;
 
-    public void add(Bullet bullet){
-        this.bullets.add(bullet);
-    }
+//    public void add(Bullet bullet){
+//        this.bullets.add(bullet);
+//    }
 
     @Override
     public void update(Graphics g) {
@@ -90,8 +100,8 @@ public class TankFream  extends Frame {
         g.drawImage(offScreenImage, 0, 0, null);
     }
 
-    public void add(Explode explode) {
-        this.explodes.add(explode);
+    public void add(AbstractGameObject object) {
+        this.objects.add(object);
     }
 
     private class MyKeyListener extends KeyAdapter {
