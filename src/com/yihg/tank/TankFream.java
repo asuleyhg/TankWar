@@ -23,10 +23,6 @@ public class TankFream  extends Frame {
         this.setSize(GAME_WIDTH,GAME_HEIGHT);
         this.addKeyListener(new MyKeyListener());
         myTank = new Player(100,100, Dir.RIGHT, Group.GOOD);
-
-//        bullets = new ArrayList<>();
-//        enemyTankList = new ArrayList<>();
-//        explodes = new ArrayList<>();
         Wall w = new Wall(300, 200, 400, 50);
         objects = new ArrayList<>();
         for (int i=0; i<5; i++){
@@ -70,9 +66,6 @@ public class TankFream  extends Frame {
             myTank.paint(g);
         }
         objects.removeIf(abstractGameObject -> !abstractGameObject.isLive());
-//        for (AbstractGameObject object : objects){
-//            object.paint(g);
-//        }
         for(int i = 0; i < objects.size(); i++){
             AbstractGameObject go1 = objects.get(i);
             //碰撞检测
@@ -87,34 +80,10 @@ public class TankFream  extends Frame {
             }
         }
 
-//        explodes.removeIf(Explode -> !Explode.getLive());
-//        for(Explode explode : explodes){
-//            explode.paint(g);
-//        }
-        // 如果场面上剩余的敌人数不超过3，则生成新的敌人
-//        if(enemyTankList.size() < 3){
-//            addEnemy(enemyTankList);
-//        }
-        //删除出界的子弹
-//        bullets.removeIf(Bullet -> !Bullet.getLive());
-        //TODO 碰撞检测
-//        for(Bullet bullet : bullets){
-//            //与每一辆敌人坦克作比较
-//            for (Tank enemyTank : enemyTankList){
-//                //如果碰撞产生，则跳出循环
-//                if(bullet.collidesWithTank(enemyTank)){
-//                    break;
-//                }
-//            }
-//            bullet.paint(g);
-//        }
     }
 
     Image offScreenImage = null;
 
-//    public void add(Bullet bullet){
-//        this.bullets.add(bullet);
-//    }
 
     @Override
     public void update(Graphics g) {

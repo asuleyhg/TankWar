@@ -1,1 +1,1 @@
-colliders=BulletTankCollider,BulletWallCollider
+colliders=BulletTankCollider,BulletWallCollider,TankWallCollider

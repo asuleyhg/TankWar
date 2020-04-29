@@ -21,6 +21,8 @@ public class Tank extends AbstractGameObject{
     //坦克宽高
     private int width, height;
 
+    private Rectangle rect;
+
     private Random random = new Random();
 
     public Tank(int x, int y, Dir dir, Group group) {
@@ -30,6 +32,8 @@ public class Tank extends AbstractGameObject{
         this.group = group;
         this.width = ResourceMgr.enemyTankD.getWidth();
         this.height = ResourceMgr.enemyTankD.getHeight();
+
+        this.rect = new Rectangle(x, y, width, height);
     }
 
     public int getX() {
@@ -115,6 +119,9 @@ public class Tank extends AbstractGameObject{
         if(random.nextInt(100) > 90){
             fire();
         }
+        //移动完之后更新坦克方块的坐标
+        rect.x = x;
+        rect.y = y;
     }
 
     private void randomDir() {
@@ -137,7 +144,7 @@ public class Tank extends AbstractGameObject{
         }
     }
 
-    private void back() {
+    public void back() {
         this.x = oldX;
         this.y = oldY;
     }
@@ -145,5 +152,9 @@ public class Tank extends AbstractGameObject{
     public void die() {
         this.isLive = false;
         TankFream.INSTANCE.add(new Explode(x, y));
+    }
+
+    public Rectangle getRect(){
+        return this.rect;
     }
 }
