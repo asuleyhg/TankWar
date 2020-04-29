@@ -5,6 +5,7 @@ import com.yihg.tank.chainofresponsebility.ColliderChain;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,12 +61,65 @@ public class TankFream  extends Frame {
     private class MyKeyListener extends KeyAdapter {
         @Override
         public void keyPressed(KeyEvent e) {
+            int key = e.getKeyCode();
+            if(key == KeyEvent.VK_F9){
+                saveGame();
+            }else if(key == KeyEvent.VK_F12){
+                loadGame();
+            }
             gm.getMyTank().keyPressed(e);
         }
 
         @Override
         public void keyReleased(KeyEvent e) {
             gm.getMyTank().keyReleased(e);
+        }
+    }
+
+    /**
+     * 保存游戏进度
+     */
+    private void saveGame() {
+        ObjectOutputStream oos = null;
+        try {
+            File f = new File("d:/test/tank.bat");
+            FileOutputStream fos = new FileOutputStream(f);
+            oos = new ObjectOutputStream(fos);
+            oos.writeObject(gm);
+            oos.flush();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if(oos != null){
+                try {
+                    oos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    /**
+     * 读取游戏进度
+     */
+    private void loadGame() {
+        ObjectInputStream ois = null;
+        try {
+            File f = new File("d:/test/tank.bat");
+            FileInputStream fis = new FileInputStream(f);
+            ois = new ObjectInputStream(fis);
+            this.gm = (GameModel) ois.readObject();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if(ois != null){
+                try {
+                    ois.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 }

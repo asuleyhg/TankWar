@@ -3,10 +3,11 @@ package com.yihg.tank;
 import com.yihg.tank.chainofresponsebility.ColliderChain;
 
 import java.awt.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameModel {
+public class GameModel implements Serializable {
 
     private Player myTank;
     private List<AbstractGameObject> objects;
