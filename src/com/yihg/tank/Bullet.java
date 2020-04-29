@@ -8,6 +8,15 @@ public class Bullet extends AbstractGameObject{
     private Rectangle rect;
     private Dir dir;
     public static int SPEED = 6;
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
+    }
+
     private Group group;
     //子弹是否存活，false时表示需要删除这颗子弹
     private Boolean isLive = true;
@@ -49,23 +58,6 @@ public class Bullet extends AbstractGameObject{
     @Override
     public Boolean isLive() {
         return this.getLive();
-    }
-
-    //碰撞检测
-    public Boolean collidesWithTank(Tank tank){
-        //如果阵营相同，则不作碰撞判断
-        if(this.group == tank.getGroup()) {
-            return false;
-        }
-        Rectangle rect = new Rectangle(x, y, ResourceMgr.tankMissile.getWidth(), ResourceMgr.tankMissile.getHeight());
-        Rectangle rectTank = new Rectangle(tank.getX(), tank.getY(),
-                ResourceMgr.goodTankD.getWidth(), ResourceMgr.goodTankD.getHeight());
-        if(rect.intersects(rectTank)){
-            this.die();
-            tank.die();
-            return true;
-        }
-        return  false;
     }
 
     public void die() {

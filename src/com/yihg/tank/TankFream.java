@@ -3,6 +3,7 @@ package com.yihg.tank;
 import com.yihg.tank.chainofresponsebility.BulletTankCollider;
 import com.yihg.tank.chainofresponsebility.BulletWallCollider;
 import com.yihg.tank.chainofresponsebility.Collider;
+import com.yihg.tank.chainofresponsebility.ColliderChain;
 
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -15,7 +16,8 @@ public class TankFream  extends Frame {
     public static final int GAME_WIDTH = 800, GAME_HEIGHT = 600;
     private Player myTank;
     private List<AbstractGameObject> objects;
-    private List<Collider> colliders;
+    private ColliderChain chain;
+
 
     private TankFream() {
         this.setTitle("tank war");
@@ -29,22 +31,10 @@ public class TankFream  extends Frame {
             addEnemy(objects);
         }
         objects.add(w);
-        initCollider();
+        chain = new ColliderChain();
     }
 
-    private void initCollider() {
-        colliders = new ArrayList<>();
-        String[] names = PropertyMgr.get("colliders").split(",");
-        try {
-            for (String name : names){
-                Class clazz = Class.forName("com.yihg.tank.chainofresponsebility." + name);
-                Collider c = (Collider)clazz.getConstructor().newInstance();
-                colliders.add(c);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+
 
 
     private void addEnemy(List<AbstractGameObject> enemyTankList) {
@@ -71,8 +61,8 @@ public class TankFream  extends Frame {
             //碰撞检测
             for (int j = 0; j < objects.size(); j++) {
                 AbstractGameObject go2 = objects.get(j);
-                for(Collider collider : colliders){
-                    collider.collide(go1, go2);
+                if(!chain.collide(go1, go2)) {
+                    break;
                 }
             }
             if(go1.isLive()){
