@@ -23,6 +23,15 @@ public class Player extends AbstractGameObject{
     private Dir dir;
     //方向键是否被按下的变量
     private boolean bU, bD, bL, bR;
+
+    public boolean isMoving() {
+        return moving;
+    }
+
+    public void setMoving(boolean moving) {
+        this.moving = moving;
+    }
+
     //是否移动
     private boolean moving = false;
     //开火策略
@@ -157,7 +166,7 @@ public class Player extends AbstractGameObject{
     }
 
     private void move() {
-        if(!moving){
+         if(!moving){
             return;
         }
         switch (dir){

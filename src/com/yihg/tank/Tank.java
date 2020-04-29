@@ -134,7 +134,7 @@ public class Tank extends AbstractGameObject{
 
 
     private void fire() {
-        TankFream.INSTANCE.add(new Bullet(x + ResourceMgr.goodTankD.getWidth() / 2 - ResourceMgr.tankMissile.getWidth() / 2
+        TankFream.INSTANCE.getGm().add(new Bullet(x + ResourceMgr.goodTankD.getWidth() / 2 - ResourceMgr.tankMissile.getWidth() / 2
                 , y + ResourceMgr.goodTankD.getHeight() / 2 - ResourceMgr.tankMissile.getHeight() / 2
                 , dir, group));
     }
@@ -153,7 +153,7 @@ public class Tank extends AbstractGameObject{
 
     public void die() {
         this.isLive = false;
-        TankFream.INSTANCE.add(new Explode(x, y));
+        TankFream.INSTANCE.getGm().add(new Explode(x, y));
     }
 
     public Rectangle getRect(){
