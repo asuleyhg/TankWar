@@ -1,5 +1,7 @@
 package com.yihg.tank;
 
+import com.yihg.tank.strategy.FireStrategy;
+
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
@@ -8,12 +10,32 @@ public class Player extends AbstractGameObject{
     public static final int SPEED = 5;
     // 初始位置
     private int x = 100, y = 100;
+
+    public Dir getDir() {
+        return dir;
+    }
+
+    public void setDir(Dir dir) {
+        this.dir = dir;
+    }
+
     //方向
     private Dir dir;
     //方向键是否被按下的变量
     private boolean bU, bD, bL, bR;
     //是否移动
     private boolean moving = false;
+    //开火策略
+    private FireStrategy strategy;
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
+    }
+
     //阵营
     private Group group;
     //是否存活
@@ -24,6 +46,17 @@ public class Player extends AbstractGameObject{
         this.y = y;
         this.dir = dir;
         this.group = group;
+        initFireStrategy();
+    }
+
+    private void initFireStrategy() {
+        String className = PropertyMgr.get("fireStrategy");
+        try {
+            Class clazz = Player.class.getClassLoader().loadClass("com.yihg.tank.strategy." + className);
+            this.strategy = (FireStrategy) clazz.getDeclaredConstructor().newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public int getX() {
@@ -156,9 +189,7 @@ public class Player extends AbstractGameObject{
     }
 
     private void fire() {
-        TankFream.INSTANCE.add(new Bullet(x + ResourceMgr.goodTankD.getWidth() / 2 - ResourceMgr.tankMissile.getWidth() / 2
-                , y + ResourceMgr.goodTankD.getHeight() / 2 - ResourceMgr.tankMissile.getHeight() / 2
-                , dir, group));
+        strategy.fire(this);
     }
 
     public void die() {

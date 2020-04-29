@@ -1,1 +1,4 @@
+#开火策略
+fireStrategy=DefaultFireStrategy
+#碰撞规则
 colliders=BulletTankCollider,BulletWallCollider,TankWallCollider
