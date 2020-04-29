@@ -9,7 +9,7 @@ public class Player extends AbstractGameObject{
     // 速度
     public static final int SPEED = 5;
     // 初始位置
-    private int x = 100, y = 100;
+    private int x, y, w, h;
 
     public Dir getDir() {
         return dir;
@@ -40,12 +40,17 @@ public class Player extends AbstractGameObject{
     private Group group;
     //是否存活
     private Boolean isLive = true;
+    //坦克方块
+    private Rectangle rect;
 
     public Player(int x, int y, Dir dir, Group group){
         this.x = x;
         this.y = y;
+        this.w = ResourceMgr.goodTankL.getWidth();
+        this.h = ResourceMgr.goodTankL.getHeight();
         this.dir = dir;
         this.group = group;
+        this.rect = new Rectangle(x, y, w, h);
         initFireStrategy();
     }
 
@@ -107,6 +112,11 @@ public class Player extends AbstractGameObject{
         return this.getLive();
     }
 
+    @Override
+    public Rectangle getRect() {
+        return rect;
+    }
+
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
         switch (key){
@@ -164,6 +174,9 @@ public class Player extends AbstractGameObject{
                 x += SPEED;
                 break;
         }
+        //移动后更新坦克坐标
+        this.rect.x = x;
+        this.rect.y = y;
     }
 
     public void keyReleased(KeyEvent e) {

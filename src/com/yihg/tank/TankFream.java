@@ -1,8 +1,5 @@
 package com.yihg.tank;
 
-import com.yihg.tank.chainofresponsebility.BulletTankCollider;
-import com.yihg.tank.chainofresponsebility.BulletWallCollider;
-import com.yihg.tank.chainofresponsebility.Collider;
 import com.yihg.tank.chainofresponsebility.ColliderChain;
 
 import java.awt.*;
@@ -21,27 +18,58 @@ public class TankFream  extends Frame {
 
     private TankFream() {
         this.setTitle("tank war");
-        this.setLocation(400,100);
+        this.setLocation(300,100);
         this.setSize(GAME_WIDTH,GAME_HEIGHT);
         this.addKeyListener(new MyKeyListener());
-        myTank = new Player(100,100, Dir.RIGHT, Group.GOOD);
-        Wall w = new Wall(300, 200, 400, 50);
-        objects = new ArrayList<>();
-        for (int i=0; i<5; i++){
-            addEnemy(objects);
-        }
-        objects.add(w);
+        this.objects = new ArrayList<>();
+        initGameObject();
         chain = new ColliderChain();
     }
 
+    /**
+     * 添加游戏物体
+     */
+    private void initGameObject() {
+        myTank = new Player(100,100, Dir.RIGHT, Group.GOOD);
+        Wall w = new Wall(300, 200, 400, 50);
+        this.objects.add(myTank);
+        this.objects.add(w);
+        for (int i=0; i<5; i++){
+            addEnemy(this.objects);
+        }
+    }
 
 
+    /**
+     * 判断坦克生成的位置上是否已经有了物体，如果没有则把这辆坦克加进容器中等待被显示
+     * @param objects
+     */
+    private void addEnemy(List<AbstractGameObject> objects) {
+        Boolean flag = false;
+        AbstractGameObject enemy = null;
+        while(!flag){
+            enemy = createOneEnemy();
+            flag = true;
+            for(AbstractGameObject go : objects){
+                if(enemy.getRect().intersects(go.getRect())){
+                    flag = false;
+                    break;
+                }
+            }
+        }
+        objects.add(enemy);
 
-    private void addEnemy(List<AbstractGameObject> enemyTankList) {
-        enemyTankList.add(
-                new Tank((int) (Math.random() * (GAME_WIDTH - ResourceMgr.enemyTankD.getWidth()))
-                        , (int) (Math.random() * (GAME_HEIGHT - 30 - ResourceMgr.enemyTankD.getHeight())) + 30
-                        , Dir.UP, Group.ENEMY));
+    }
+
+
+    /**
+     * 随机生成一辆敌军坦克
+     * @return
+     */
+    private Tank createOneEnemy() {
+        int randomX = (int) (Math.random() * (GAME_WIDTH - ResourceMgr.enemyTankD.getWidth()));
+        int randomY = (int) (Math.random() * (GAME_HEIGHT - 30 - ResourceMgr.enemyTankD.getHeight())) + 30;
+         return new Tank(randomX, randomY, Dir.getRandomDir(), Group.ENEMY);
     }
 
     @Override

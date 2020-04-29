@@ -28,6 +28,8 @@ public class Tank extends AbstractGameObject{
     public Tank(int x, int y, Dir dir, Group group) {
         this.x = x;
         this.y = y;
+        this.oldX = x;
+        this.oldY = y;
         this.dir = dir;
         this.group = group;
         this.width = ResourceMgr.enemyTankD.getWidth();

@@ -1,4 +1,4 @@
-#开火策略
+#开火策略 默认方向：DefaultFireStrategy  四个方向：FourDirFireStrategy
 fireStrategy=DefaultFireStrategy
 #碰撞规则
-colliders=BulletTankCollider,BulletWallCollider,TankWallCollider
+colliders=BulletTankCollider,BulletWallCollider,TankWallCollider,TankTankCollider

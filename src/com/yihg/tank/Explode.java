@@ -3,8 +3,7 @@ package com.yihg.tank;
 import java.awt.*;
 
 public class Explode extends AbstractGameObject{
-    private int x, y;
-    //子弹是否存活，false时表示需要删除这颗子弹
+    private int x, y, w, h;
     private Boolean isLive = true;
     //爆炸图片绘画步骤
     private int step = 0;
@@ -19,6 +18,8 @@ public class Explode extends AbstractGameObject{
     public Explode(int x, int y) {
         this.x = x;
         this.y = y;
+        this.w = ResourceMgr.explodes[0].getWidth();
+        this.h = ResourceMgr.explodes[0].getHeight();
     }
 
     public void paint(Graphics g) {
@@ -33,6 +34,11 @@ public class Explode extends AbstractGameObject{
     @Override
     public Boolean isLive() {
         return this.getLive();
+    }
+
+    @Override
+    public Rectangle getRect() {
+        return new Rectangle(x, y, w, h);
     }
 
     private void die() {
