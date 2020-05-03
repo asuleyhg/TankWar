@@ -1,3 +1,4 @@
+import com.yihg.tank.PropertyMgr;
 import org.junit.jupiter.api.Test;
 
 import javax.imageio.ImageIO;
@@ -5,6 +6,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
