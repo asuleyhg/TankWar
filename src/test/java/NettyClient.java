@@ -21,9 +21,8 @@ public class NettyClient {
                 socketChannel.pipeline().addLast(new MyHandler());
             }
         });
-        b.connect("localhost", 8888).sync();
-        //手动阻塞，以后可以有其他的方法，这里的这种方法并不可取
-        System.in.read();
+        ChannelFuture future = b.connect("localhost", 8888).sync();
+        future.channel().closeFuture().sync();
         workerGroup.shutdownGracefully();
 
     }
