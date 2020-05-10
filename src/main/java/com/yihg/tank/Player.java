@@ -1,50 +1,28 @@
 package com.yihg.tank;
 
 import com.yihg.tank.strategy.FireStrategy;
+import net.TankJoinMsg;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.util.UUID;
 
 public class Player extends AbstractGameObject{
     // 速度
     public static final int SPEED = 5;
+
+    //坦克ID
+    private UUID id;
     // 初始位置
     private int x, y, w, h;
-
-    public Dir getDir() {
-        return dir;
-    }
-
-    public void setDir(Dir dir) {
-        this.dir = dir;
-    }
-
     //方向
     private Dir dir;
     //方向键是否被按下的变量
     private boolean bU, bD, bL, bR;
-
-    public boolean isMoving() {
-        return moving;
-    }
-
-    public void setMoving(boolean moving) {
-        this.moving = moving;
-    }
-
     //是否移动
     private boolean moving = false;
     //开火策略
     private FireStrategy strategy;
-
-    public Group getGroup() {
-        return group;
-    }
-
-    public void setGroup(Group group) {
-        this.group = group;
-    }
-
     //阵营
     private Group group;
     //是否存活
@@ -59,6 +37,20 @@ public class Player extends AbstractGameObject{
         this.h = ResourceMgr.goodTankL.getHeight();
         this.dir = dir;
         this.group = group;
+        this.id = UUID.randomUUID();
+        this.rect = new Rectangle(x, y, w, h);
+        initFireStrategy();
+    }
+
+    public Player(TankJoinMsg msg) {
+        this.x = msg.getX();
+        this.y = msg.getY();
+        this.dir = msg.getDir();
+        this.group = msg.getGroup();
+        this.id = msg.getId();
+        this.w = ResourceMgr.goodTankL.getWidth();
+        this.h = ResourceMgr.goodTankL.getHeight();
+
         this.rect = new Rectangle(x, y, w, h);
         initFireStrategy();
     }
@@ -71,6 +63,37 @@ public class Player extends AbstractGameObject{
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+    public Dir getDir() {
+        return dir;
+    }
+
+    public void setDir(Dir dir) {
+        this.dir = dir;
+    }
+
+    public boolean isMoving() {
+        return moving;
+    }
+
+    public void setMoving(boolean moving) {
+        this.moving = moving;
+    }
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
     }
 
     public int getX() {
@@ -98,6 +121,10 @@ public class Player extends AbstractGameObject{
     }
 
     public void paint(Graphics g) {
+        Color c = g.getColor();
+        g.setColor(Color.YELLOW);
+        g.drawString(id.toString(), x, y-10);
+        g.setColor(c);
             switch (dir){
                 case LEFT:
                     g.drawImage(ResourceMgr.goodTankL, x, y, null);

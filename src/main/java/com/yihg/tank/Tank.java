@@ -1,7 +1,10 @@
 package com.yihg.tank;
 
+import net.TankJoinMsg;
+
 import java.awt.*;
 import java.util.Random;
+import java.util.UUID;
 
 public class Tank extends AbstractGameObject{
     // 速度
@@ -20,6 +23,7 @@ public class Tank extends AbstractGameObject{
     private int oldX, oldY;
     //坦克宽高
     private int width, height;
+    private UUID id;
 
     private Rectangle rect;
 
@@ -32,6 +36,20 @@ public class Tank extends AbstractGameObject{
         this.oldY = y;
         this.dir = dir;
         this.group = group;
+        this.width = ResourceMgr.enemyTankD.getWidth();
+        this.height = ResourceMgr.enemyTankD.getHeight();
+
+        this.rect = new Rectangle(x, y, width, height);
+    }
+
+    public Tank(TankJoinMsg msg) {
+        this.x = msg.getX();
+        this.y = msg.getY();
+        this.oldX = x;
+        this.oldY = y;
+        this.dir = msg.getDir();
+        this.group = msg.getGroup();
+        this.id = msg.getId();
         this.width = ResourceMgr.enemyTankD.getWidth();
         this.height = ResourceMgr.enemyTankD.getHeight();
 

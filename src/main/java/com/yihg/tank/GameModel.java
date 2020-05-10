@@ -6,6 +6,8 @@ import java.awt.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 
 public class GameModel implements Serializable {
 
@@ -26,17 +28,21 @@ public class GameModel implements Serializable {
         chain = new ColliderChain();
     }
 
+    Random random = new Random();
     /**
      * 添加游戏物体
      */
     private void initGameObject() {
-        myTank = new Player(100,100, Dir.RIGHT, Group.GOOD);
+
+        myTank = new Player(50 + random.nextInt(TankFream.INSTANCE.GAME_WIDTH - ResourceMgr.enemyTankD.getWidth()),
+                50 + random.nextInt(TankFream.INSTANCE.GAME_HEIGHT - ResourceMgr.enemyTankD.getHeight()),
+                Dir.getRandomDir(), Group.values()[random.nextInt(Group.values().length)]);
         Wall w = new Wall(300, 200, 400, 50);
         this.objects.add(myTank);
-        this.objects.add(w);
-        for (int i=0; i<5; i++){
-            addEnemy(this.objects);
-        }
+//        this.objects.add(w);
+//        for (int i=0; i<5; i++){
+//            addEnemy(this.objects);
+//        }
     }
 
     /**
@@ -95,5 +101,22 @@ public class GameModel implements Serializable {
 
     public void add(AbstractGameObject object) {
         this.objects.add(object);
+    }
+
+    /**
+     * 根据UUID查找游戏物体
+     * @param id
+     * @return
+     */
+    public AbstractGameObject findByUUID(UUID id) {
+
+        for(AbstractGameObject o : this.objects){
+            Player p = (Player)o;
+            if(id.equals(p.getId())){
+                return p;
+            }
+
+        }
+        return null;
     }
 }
