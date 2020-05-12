@@ -1,11 +1,14 @@
 package net;
 
-import com.yihg.tank.*;
+import com.yihg.tank.Dir;
+import com.yihg.tank.Group;
+import com.yihg.tank.Player;
+import com.yihg.tank.TankFream;
 
 import java.io.*;
 import java.util.UUID;
 
-public class TankJoinMsg extends Msg{
+public class TankStartMovingMsg extends Msg{
     public int getX() {
         return x;
     }
@@ -61,9 +64,9 @@ public class TankJoinMsg extends Msg{
     private UUID id;
 
 
-    public TankJoinMsg() {}
+    public TankStartMovingMsg() {}
 
-    public TankJoinMsg( Player p) {
+    public TankStartMovingMsg(Player p) {
         this.x = p.getX();
         this.y = p.getY();
         this.dir = p.getDir();
@@ -140,7 +143,7 @@ public class TankJoinMsg extends Msg{
      * 消息发出之后的处理逻辑
      */
     public void handle() {
-        //如果消息是自己发的，那就不处理；如果是别人发的消息就new一辆新的坦克
+        /*//如果消息是自己发的，那就不处理；如果是别人发的消息就new一辆新的坦克
         if(this.id.equals(TankFream.INSTANCE.getGm().getMyTank().getId())){return;}
         if(TankFream.INSTANCE.getGm().findByUUID(this.id) != null){return;}
 
@@ -149,7 +152,7 @@ public class TankJoinMsg extends Msg{
         TankFream.INSTANCE.getGm().add(p);
 
         //每次接收到消息之后，把自己重新发一遍给所有人
-        Client.INSTANCE.send(new TankJoinMsg(TankFream.INSTANCE.getGm().getMyTank()));
+        Client.INSTANCE.send(new TankStartMovingMsg(TankFream.INSTANCE.getGm().getMyTank()));*/
 
 
     }
@@ -160,6 +163,6 @@ public class TankJoinMsg extends Msg{
      */
     @Override
     public MsgType getMsgType() {
-        return MsgType.TankJoinMsg;
+        return MsgType.TankStartMovingMsg;
     }
 }

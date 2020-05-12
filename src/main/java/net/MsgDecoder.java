@@ -9,21 +9,28 @@ import java.util.List;
 public class MsgDecoder extends ByteToMessageDecoder {
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
-        //当一条消息确认全部收到之后才开始解码工作
-        if(in.readableBytes() < 37){return;}
+        //确定收到消息类型和消息长度，如果没收到则直接返回,消息类型和长度都是int，所以加起来是8字节
+        if(in.readableBytes() < 8){return;}
+        //读取出消息类型和消息长度,并且在这之前记录一下读取位置的下标
+        in.markReaderIndex();
 
-        //首先把消息长度读出来，读出来之后以后的读操作都读不到这个信息了，
-        // 就是说如果消息现在还是37字节，读完长度之后就要减去这个int的4字节
-        // 以后再读这条消息他的长度就只有33字节了
+        MsgType msgType = MsgType.values()[in.readInt()];
         int length = in.readInt();
 
-        byte[] bytes = new byte[length];
+        //如果之后的可读取长度小于length，说明消息没有收全，需要复位读取下标然后重新读取这条消息
+        if(in.readableBytes() < length){
+            in.resetReaderIndex();
+            return;
+        }
 
+        byte[] bytes = new byte[length];
         in.readBytes(bytes);
 
-        TankJoinMsg msg = new TankJoinMsg();
+        /*TankJoinMsg msg = new TankJoinMsg();
+        msg.parse(bytes);*/
+        Msg msg = null;
+        msg = (Msg)Class.forName("net." + msgType.toString()).getDeclaredConstructor().newInstance();
         msg.parse(bytes);
-
         out.add(msg);
     }
 }
