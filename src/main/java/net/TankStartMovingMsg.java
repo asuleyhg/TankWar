@@ -9,6 +9,11 @@ import java.io.*;
 import java.util.UUID;
 
 public class TankStartMovingMsg extends Msg{
+
+    private int x, y;
+    private Dir dir;
+    private UUID id;
+
     public int getX() {
         return x;
     }
@@ -33,22 +38,6 @@ public class TankStartMovingMsg extends Msg{
         this.dir = dir;
     }
 
-    public Boolean getMoving() {
-        return moving;
-    }
-
-    public void setMoving(Boolean moving) {
-        this.moving = moving;
-    }
-
-    public Group getGroup() {
-        return group;
-    }
-
-    public void setGroup(Group group) {
-        this.group = group;
-    }
-
     public UUID getId() {
         return id;
     }
@@ -57,22 +46,25 @@ public class TankStartMovingMsg extends Msg{
         this.id = id;
     }
 
-    private int x, y;
-    private Dir dir;
-    private Boolean moving;
-    private Group group;
-    private UUID id;
+    @Override
+    public String toString() {
+        return "TankStartMovingMsg{" +
+                "x=" + x +
+                ", y=" + y +
+                ", dir=" + dir +
+                ", id=" + id +
+                '}';
+    }
+
 
 
     public TankStartMovingMsg() {}
 
-    public TankStartMovingMsg(Player p) {
-        this.x = p.getX();
-        this.y = p.getY();
-        this.dir = p.getDir();
-        this.moving = p.isMoving();
-        this.group = p.getGroup();
-        this.id = p.getId();
+    public TankStartMovingMsg(int x, int y, Dir dir, UUID id) {
+        this.x = x;
+        this.y = y;
+        this.dir = dir;
+        this.id = id;
     }
 
     public byte[] toBytes(){
@@ -85,8 +77,6 @@ public class TankStartMovingMsg extends Msg{
             dos.writeInt(x);
             dos.writeInt(y);
             dos.writeInt(dir.ordinal());
-            dos.writeBoolean(moving);
-            dos.writeInt(group.ordinal());
             dos.writeLong(id.getMostSignificantBits());
             dos.writeLong(id.getLeastSignificantBits());
             dos.flush();
@@ -113,8 +103,6 @@ public class TankStartMovingMsg extends Msg{
             this.x = dis.readInt();
             this.y = dis.readInt();
             this.dir = Dir.values()[dis.readInt()];
-            this.moving = dis.readBoolean();
-            this.group = Group.values()[dis.readInt()];
             this.id = new UUID(dis.readLong(), dis.readLong());
         } catch (IOException e) {
             e.printStackTrace();
@@ -127,23 +115,13 @@ public class TankStartMovingMsg extends Msg{
         }
     }
 
-    @Override
-    public String toString() {
-        return "TankJoinMsg{" +
-                "x=" + x +
-                ", y=" + y +
-                ", dir=" + dir +
-                ", moving=" + moving +
-                ", group=" + group +
-                ", id=" + id +
-                '}';
-    }
+
 
     /**
      * 消息发出之后的处理逻辑
      */
     public void handle() {
-        /*//如果消息是自己发的，那就不处理；如果是别人发的消息就new一辆新的坦克
+        /*//如果消息是自己发的，那就不处理；
         if(this.id.equals(TankFream.INSTANCE.getGm().getMyTank().getId())){return;}
         if(TankFream.INSTANCE.getGm().findByUUID(this.id) != null){return;}
 
