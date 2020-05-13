@@ -23,6 +23,7 @@ public class Tank extends AbstractGameObject{
     private int oldX, oldY;
     //坦克宽高
     private int width, height;
+
     private UUID id;
 
     private Rectangle rect;
@@ -152,7 +153,7 @@ public class Tank extends AbstractGameObject{
 
 
     private void fire() {
-        TankFream.INSTANCE.getGm().add(new Bullet(x + ResourceMgr.goodTankD.getWidth() / 2 - ResourceMgr.tankMissile.getWidth() / 2
+        TankFream.INSTANCE.getGm().add(new Bullet(this.id, x + ResourceMgr.goodTankD.getWidth() / 2 - ResourceMgr.tankMissile.getWidth() / 2
                 , y + ResourceMgr.goodTankD.getHeight() / 2 - ResourceMgr.tankMissile.getHeight() / 2
                 , dir, group));
     }

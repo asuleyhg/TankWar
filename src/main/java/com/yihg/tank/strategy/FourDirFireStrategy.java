@@ -1,6 +1,8 @@
 package com.yihg.tank.strategy;
 
 import com.yihg.tank.*;
+import net.BulletNewMsg;
+import net.Client;
 
 public class FourDirFireStrategy implements FireStrategy{
 
@@ -9,9 +11,11 @@ public class FourDirFireStrategy implements FireStrategy{
 
         Dir[] dirs = Dir.values();
         for(Dir d : dirs){
-            TankFream.INSTANCE.getGm().add(new Bullet(player.getX() + ResourceMgr.goodTankD.getWidth() / 2 - ResourceMgr.tankMissile.getWidth() / 2
+            Bullet b = new Bullet(player.getId(), player.getX() + ResourceMgr.goodTankD.getWidth() / 2 - ResourceMgr.tankMissile.getWidth() / 2
                     , player.getY() + ResourceMgr.goodTankD.getHeight() / 2 - ResourceMgr.tankMissile.getHeight() / 2
-                    , d, player.getGroup()));
+                    , d, player.getGroup());
+            TankFream.INSTANCE.getGm().add(b);
+            Client.INSTANCE.send(new BulletNewMsg(b));
         }
     }
 }

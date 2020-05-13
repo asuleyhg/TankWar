@@ -1,13 +1,56 @@
 package com.yihg.tank;
 
 import java.awt.*;
+import java.util.UUID;
 
 public class Bullet extends AbstractGameObject{
+    private UUID playerId;
+    private UUID id = UUID.randomUUID();
     private int x, y;
     private int width, height;
     private Rectangle rect;
     private Dir dir;
     public static int SPEED = 6;
+
+    public UUID getPlayerId() {
+        return playerId;
+    }
+
+    public void setPlayerId(UUID playerId) {
+        this.playerId = playerId;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public Dir getDir() {
+        return dir;
+    }
+
+    public void setDir(Dir dir) {
+        this.dir = dir;
+    }
 
     public Group getGroup() {
         return group;
@@ -30,7 +73,8 @@ public class Bullet extends AbstractGameObject{
 
 
 
-    public Bullet(int x, int y, Dir dir, Group group) {
+    public Bullet(UUID playerId, int x, int y, Dir dir, Group group) {
+        this.playerId = playerId;
         this.x = x;
         this.y = y;
         this.dir = dir;
