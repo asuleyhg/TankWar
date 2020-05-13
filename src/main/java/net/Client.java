@@ -51,7 +51,7 @@ public class Client {
 
     }
 
-    public void send(TankJoinMsg msg){
+    public void send(Msg msg){
         channel.writeAndFlush(msg);
     }
 

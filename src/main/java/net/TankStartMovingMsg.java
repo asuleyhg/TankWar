@@ -121,18 +121,18 @@ public class TankStartMovingMsg extends Msg{
      * 消息发出之后的处理逻辑
      */
     public void handle() {
-        /*//如果消息是自己发的，那就不处理；
+        //如果消息是自己发的，那就不处理；
         if(this.id.equals(TankFream.INSTANCE.getGm().getMyTank().getId())){return;}
-        if(TankFream.INSTANCE.getGm().findByUUID(this.id) != null){return;}
 
-        Player p = new Player(this);
+        Player p = (Player) TankFream.INSTANCE.getGm().findByUUID(this.id);
 
-        TankFream.INSTANCE.getGm().add(p);
-
-        //每次接收到消息之后，把自己重新发一遍给所有人
-        Client.INSTANCE.send(new TankStartMovingMsg(TankFream.INSTANCE.getGm().getMyTank()));*/
-
-
+        //如果p不等于null说明找到了这个角色,如果没找到则不做任何处理
+        if(p != null){
+            p.setX(this.x);
+            p.setY(this.y);
+            p.setDir(this.dir);
+            p.setMoving(true);
+        }
     }
 
     /**
