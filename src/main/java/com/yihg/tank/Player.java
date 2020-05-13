@@ -4,6 +4,7 @@ import com.yihg.tank.strategy.FireStrategy;
 import net.Client;
 import net.TankJoinMsg;
 import net.TankStartMovingMsg;
+import net.TankStopMsg;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -179,6 +180,7 @@ public class Player extends AbstractGameObject{
         boolean oldMoving = moving;
         if(!bR && !bD && !bL && !bU){
             moving = false;
+            Client.INSTANCE.send(new TankStopMsg(this.id));
         }else {
             moving = true;
             if(bR && !bD && !bL && !bU){
