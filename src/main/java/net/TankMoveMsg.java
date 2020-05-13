@@ -1,14 +1,13 @@
 package net;
 
 import com.yihg.tank.Dir;
-import com.yihg.tank.Group;
 import com.yihg.tank.Player;
 import com.yihg.tank.TankFream;
 
 import java.io.*;
 import java.util.UUID;
 
-public class TankStartMovingMsg extends Msg{
+public class TankMoveMsg extends Msg{
 
     private int x, y;
     private Dir dir;
@@ -48,7 +47,7 @@ public class TankStartMovingMsg extends Msg{
 
     @Override
     public String toString() {
-        return "TankStartMovingMsg{" +
+        return "TankMoveMsg{" +
                 "x=" + x +
                 ", y=" + y +
                 ", dir=" + dir +
@@ -58,9 +57,9 @@ public class TankStartMovingMsg extends Msg{
 
 
 
-    public TankStartMovingMsg() {}
+    public TankMoveMsg() {}
 
-    public TankStartMovingMsg(int x, int y, Dir dir, UUID id) {
+    public TankMoveMsg(int x, int y, Dir dir, UUID id) {
         this.x = x;
         this.y = y;
         this.dir = dir;
@@ -141,6 +140,6 @@ public class TankStartMovingMsg extends Msg{
      */
     @Override
     public MsgType getMsgType() {
-        return MsgType.TankStartMovingMsg;
+        return MsgType.TankMoveMsg;
     }
 }

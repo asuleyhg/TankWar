@@ -3,7 +3,7 @@ package com.yihg.tank;
 import com.yihg.tank.strategy.FireStrategy;
 import net.Client;
 import net.TankJoinMsg;
-import net.TankStartMovingMsg;
+import net.TankMoveMsg;
 import net.TankStopMsg;
 
 import java.awt.*;
@@ -178,6 +178,7 @@ public class Player extends AbstractGameObject{
     private void setMainDir() {
         //记录开始是否移动的标记
         boolean oldMoving = moving;
+        Dir oldDir = this.dir;
         if(!bR && !bD && !bL && !bU){
             moving = false;
             Client.INSTANCE.send(new TankStopMsg(this.id));
@@ -197,7 +198,11 @@ public class Player extends AbstractGameObject{
             }
             //如果一开始是静止状态，现在改为移动状态了，需要发送这个消息；如果已经移动了则不发送消息
             if(!oldMoving){
-                Client.INSTANCE.send(new TankStartMovingMsg(x, y, dir, id));
+                Client.INSTANCE.send(new TankMoveMsg(x, y, dir, id));
+            }
+            //当方向改变的时候也要发送移动的消息
+            if(!oldDir.equals(this.dir)){
+                Client.INSTANCE.send(new TankMoveMsg(x, y, dir, id));
             }
 
         }
